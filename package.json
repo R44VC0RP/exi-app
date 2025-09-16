@@ -1,0 +1,32 @@
+{
+  "name": "exi-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start"
+  },
+  "dependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "next": "15.5.3",
+    "@ai-sdk/openai": "^1.1.14",
+    "@modelcontextprotocol/sdk": "^1.18.0",
+    "@neondatabase/serverless": "^1.0.1",
+    "@slack/web-api": "^7.9.3",
+    "@vercel/functions": "^2.0.0",
+    "ai": "^4.1.46",
+    "exa-js": "^1.4.10",
+    "graphql-request": "^7.2.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4"
+  }
+}
