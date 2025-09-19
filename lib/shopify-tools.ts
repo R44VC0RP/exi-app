@@ -208,6 +208,91 @@ export const buildShopifyRestTools = (updateStatus?: UpdateStatus) => ({
       return { customer: data.customer };
     },
   }),
+
+  shopifyGetOrder: tool({
+    description: "Get a specific Shopify order by ID (REST)",
+    parameters: z.object({
+      orderId: z.number().int().describe("The Shopify order ID"),
+    }),
+    execute: async ({ orderId }) => {
+      updateStatus?.("is fetching shopify order details...");
+      const data = await shopifyFetch<{ order: any }>(
+        `/orders/${orderId}.json`
+      );
+      return { order: data.order };
+    },
+  }),
+
+  shopifyUpdateOrder: tool({
+    description: "Update a Shopify order (shipping address, billing address, notes, email, etc.)",
+    parameters: z.object({
+      orderId: z.number().int().describe("The Shopify order ID to update"),
+      updateType: z.enum(["shipping", "billing", "note", "email", "tags"]).describe("Type of update to perform"),
+      // Use a simple string field that we'll parse as JSON
+      updateDataJson: z.string().describe("JSON string containing the update data. For addresses: {\"first_name\":\"John\",\"last_name\":\"Doe\",\"address1\":\"123 Main St\",\"city\":\"NYC\",\"zip\":\"10001\"}. For note/email/tags: {\"value\":\"the new value\"}"),
+    }),
+    execute: async ({ orderId, updateType, updateDataJson }) => {
+      updateStatus?.("is updating shopify order...");
+      console.log(`🛍️ [SHOPIFY_UPDATE_ORDER] Updating order ${orderId}`);
+      console.log('📋 [SHOPIFY_UPDATE_ORDER] Update type:', updateType);
+      console.log('📋 [SHOPIFY_UPDATE_ORDER] Update data JSON:', updateDataJson);
+      
+      // Parse the JSON data
+      let updateData: any;
+      try {
+        updateData = JSON.parse(updateDataJson);
+        console.log('📋 [SHOPIFY_UPDATE_ORDER] Parsed update data:', updateData);
+      } catch (error) {
+        console.error('❌ [SHOPIFY_UPDATE_ORDER] Failed to parse update data JSON:', error);
+        throw new Error(`Invalid JSON in updateDataJson: ${error}`);
+      }
+      
+      const payload: any = { order: {} };
+      
+      switch (updateType) {
+        case "shipping":
+          console.log('📦 [SHOPIFY_UPDATE_ORDER] Updating shipping address');
+          payload.order.shipping_address = updateData;
+          break;
+          
+        case "billing":
+          console.log('💳 [SHOPIFY_UPDATE_ORDER] Updating billing address');
+          payload.order.billing_address = updateData;
+          break;
+          
+        case "note":
+          console.log('📝 [SHOPIFY_UPDATE_ORDER] Updating order note');
+          payload.order.note = updateData.note || updateData.value || Object.values(updateData)[0];
+          break;
+          
+        case "email":
+          console.log('📧 [SHOPIFY_UPDATE_ORDER] Updating customer email');
+          payload.order.email = updateData.email || updateData.value || Object.values(updateData)[0];
+          break;
+          
+        case "tags":
+          console.log('🏷️ [SHOPIFY_UPDATE_ORDER] Updating order tags');
+          payload.order.tags = updateData.tags || updateData.value || Object.values(updateData)[0];
+          break;
+          
+        default:
+          throw new Error(`Unknown update type: ${updateType}`);
+      }
+      
+      console.log('📋 [SHOPIFY_UPDATE_ORDER] Update payload:', JSON.stringify(payload, null, 2));
+      
+      const data = await shopifyFetch<{ order: any }>(
+        `/orders/${orderId}.json`,
+        {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        }
+      );
+      
+      console.log('✅ [SHOPIFY_UPDATE_ORDER] Order updated successfully');
+      return { order: data.order };
+    },
+  }),
 });
 
 export type ShopifyRestTools = ReturnType<typeof buildShopifyRestTools>;

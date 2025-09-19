@@ -4,21 +4,22 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:ngrok": "concurrently \"next dev --turbopack\" \"ngrok http 3000 --domain=development.exon.dev\"",
     "build": "next build --turbopack",
     "start": "next start"
   },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.5.3",
     "@ai-sdk/openai": "^1.1.14",
-    "@modelcontextprotocol/sdk": "^1.18.0",
+    "@modelcontextprotocol/sdk": "^1.18.1",
     "@neondatabase/serverless": "^1.0.1",
     "@slack/web-api": "^7.9.3",
     "@vercel/functions": "^2.0.0",
     "ai": "^4.1.46",
     "exa-js": "^1.4.10",
     "graphql-request": "^7.2.0",
+    "next": "15.5.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -27,6 +28,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "concurrently": "^9.1.0"
   }
 }
