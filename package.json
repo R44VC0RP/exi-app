@@ -6,7 +6,11 @@
     "dev": "next dev --turbopack",
     "dev:ngrok": "concurrently \"next dev --turbopack\" \"ngrok http 3000 --domain=development.exon.dev\"",
     "build": "next build --turbopack",
-    "start": "next start"
+    "start": "next start",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "auth:generate": "@better-auth/cli generate"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.14",
@@ -15,6 +19,9 @@
     "@slack/web-api": "^7.9.3",
     "@vercel/functions": "^2.0.0",
     "ai": "^4.1.46",
+    "better-auth": "^1.3.13",
+    "dotenv": "^17.2.2",
+    "drizzle-orm": "^0.44.5",
     "exa-js": "^1.4.10",
     "graphql-request": "^7.2.0",
     "next": "15.5.3",
@@ -23,12 +30,14 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@better-auth/cli": "^1.3.13",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
+    "concurrently": "^9.1.0",
+    "drizzle-kit": "^0.31.4",
     "tailwindcss": "^4",
-    "concurrently": "^9.1.0"
+    "typescript": "^5"
   }
 }

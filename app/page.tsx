@@ -1,27 +1,40 @@
 import Image from "next/image";
+import { AuthButton } from "@/components/auth-button";
 
 export default function Home() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
+        <div className="flex items-center justify-between w-full">
+          <Image
+            className="dark:invert"
+            src="/next.svg"
+            alt="Next.js logo"
+            width={180}
+            height={38}
+            priority
+          />
+          <AuthButton />
+        </div>
+        
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 w-full max-w-2xl">
+          <h2 className="text-lg font-semibold text-green-800 mb-2">🎉 Authentication Setup Complete!</h2>
+          <p className="text-green-700 text-sm">
+            Your project now has Better Auth with GitHub OAuth and Drizzle ORM configured. 
+            Click the "Sign in with GitHub" button above to test the authentication flow.
+          </p>
+        </div>
+
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
+            Configure your environment variables in{" "}
             <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
+              .env.local
             </code>
             .
           </li>
           <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
+            Check <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">SETUP.md</code> for detailed instructions.
           </li>
         </ol>
 
